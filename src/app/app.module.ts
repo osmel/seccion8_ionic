@@ -8,6 +8,8 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { Pagina2Page } from '../pages/pagina2/pagina2';
 
+//plugins
+import { IonicStorageModule } from '@ionic/storage';
 // servicios
 import { AjustesService } from "../providers/ajustes";
 
@@ -19,7 +21,8 @@ import { AjustesService } from "../providers/ajustes";
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

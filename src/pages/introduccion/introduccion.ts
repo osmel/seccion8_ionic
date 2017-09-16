@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { HomePage } from "../home/home";
 
-//import { AjustesService }  from "../../providers/ajustes";
+import { AjustesService }  from "../../providers/ajustes";
 
 /**
  * Generated class for the IntroduccionPage page.
@@ -37,18 +37,17 @@ export class IntroduccionPage {
   ];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-  	// private _ajustes: AjustesService
+  	 private _ajustesServicio: AjustesService
   	) {
   }
 
   saltar_tutorial(){
 
-/*
-    this._ajustes.ajustes.mostrar_tutorial = false;
-    this._ajustes.guardar_storage();
-*/
 
-    this.navCtrl.setRoot( HomePage );
+    this._ajustesServicio.ajustes.mostrar_tutorial = false; //si saltamos asignamos a la propiedad "ajustes.mostrar_tutorial = false;"
+    this._ajustesServicio.guardar_storage();    //y luego guardamos la propiedad en el storage
+
+    this.navCtrl.setRoot( HomePage );  //nos movemos al HOME
 
   }
 }

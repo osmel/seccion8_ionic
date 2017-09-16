@@ -17,70 +17,59 @@ export class AjustesService {
 
   }
 
-  cargar_storage(){
+  cargar_storage(){  // storage.get -->cargar la data
 
     let promesa = new Promise(  ( resolve, reject )=>{
 
-      if(  this.platform.is("cordova")   ){
-        // Dispositivo
-        console.log("Inicializando storage");
+      if(  this.platform.is("cordova")   ){    // si estamos en un Dispositivo
+            console.log("Inicializando storage");
 
-        this.storage.ready()
-            .then( ()=>{
+            this.storage.ready()  //esto regresa una promesa
+                .then( ()=>{
 
-              console.log("Storage listo");
+                  console.log("Storage listo");
 
-              this.storage.get("ajustes")
-                  .then( ajustes=>{
+                  this.storage.get("ajustes") //este regresa una promesa
+                      .then( ajus=>{
 
-                    if( ajustes ){
-                      this.ajustes = ajustes;
-                    }
+                        if( ajus ){
+                          this.ajustes = ajus;
+                        }
 
-                    resolve();
+                        resolve();
 
-                  });
+                      });
+                })
 
+      }else{  // si estamos en  Escritorio
+            if( localStorage.getItem("ajustes") ){ //como puede ser la primera vez que carguemos puede ser que no exista la prop ajustes, por tanto debemos comprobarla
+              this.ajustes = JSON.parse( localStorage.getItem("ajustes") );  //guardamos el valor del ajuste como objeto(lo convertimos a objeto con JSON.parse porque es un string)
+            } 
 
-        })
-
-
-
-      }else{
-        // Escritorio
-        if( localStorage.getItem("ajustes")  ){
-          this.ajustes = JSON.parse( localStorage.getItem("ajustes") );
-        }
-
-        resolve();
+            resolve();
 
       }
 
 
-    });
+  });
 
-    return promesa;
+  return promesa;
 
 
   }
 
 
-  guardar_storage(){
+  guardar_storage(){  // storage.set -->guardar la data
 
 
-    if(  this.platform.is("cordova")   ){
-      // Dispositivo
+    if(  this.platform.is("cordova")   ){  //cuando estamos en un movil funciona el plugin    // Dispositivo
       this.storage.ready()
             .then( ()=>{
-
               this.storage.set( "ajustes", this.ajustes );
-
             })
 
-
-    }else{
-      // Escritorio
-      localStorage.setItem("ajustes", JSON.stringify(this.ajustes) );
+    }else{  //cuando estamo en un Escritorio(localstorage en los escritorios solo graban string por eso convierto el objeto a string con  JSON.stringify)
+      localStorage.setItem("ajustes", JSON.stringify(this.ajustes) );  //guardo en la propiedad ajuste
     }
 
 
