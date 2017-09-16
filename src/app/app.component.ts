@@ -16,7 +16,7 @@ export class MyApp {
   //rootPage:any = 'IntroduccionPage';
   rootPage:any;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
+  constructor(private platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
       private _ajustesServicio:AjustesService) {
     platform.ready().then(() => {
       
@@ -31,8 +31,13 @@ export class MyApp {
                 this.rootPage = HomePage;
               }
 
-              // Okay, so the platform is ready and our plugins are available.
-              // Here you can do any higher level native things you might need.
+              this.platform.pause.subscribe(()=>{  //me suscribo a 
+                 console.log('mi aplicacion se detendra, hizo una pausa');
+              });
+              this.platform.resume.subscribe(()=>{  //me suscribo a 
+                 console.log('mi aplicacion se reanudo, va a continuar');
+              });
+              
               statusBar.styleDefault();
               splashScreen.hide();  //loading de la aplicacion
 

@@ -32,7 +32,7 @@ export class AjustesService {
                   this.storage.get("ajustes") //este regresa una promesa
                       .then( ajus=>{
 
-                        if( ajus ){
+                        if( ajus ){ //ajustes inicialmente viene null
                           this.ajustes = ajus;
                         }
 
@@ -63,7 +63,7 @@ export class AjustesService {
 
 
     if(  this.platform.is("cordova")   ){  //cuando estamos en un movil funciona el plugin    // Dispositivo
-      this.storage.ready()
+      this.storage.ready() //regresa una promesa
             .then( ()=>{
               this.storage.set( "ajustes", this.ajustes );
             })

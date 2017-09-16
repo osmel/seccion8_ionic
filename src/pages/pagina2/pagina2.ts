@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 //import { Pagina3Page } from '../../pages/pagina3/pagina3';
 
 @Component({
@@ -8,7 +8,10 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class Pagina2Page {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+  	private alertCtrl: AlertController,
+  	private loadingCtrl: LoadingController 
+  	) {
   }
 
 
@@ -17,6 +20,7 @@ export class Pagina2Page {
 	ionViewCanEnter(){
 		console.log('Event: ionViewCanEnter (bool/prom) -> 1-Puede entrar');
 		//return false; no permite entrar a la pagina
+		/*
 		let numero = Math.round(Math.random()*10);
 		console.log(numero);
 		if (numero>=5){
@@ -24,6 +28,38 @@ export class Pagina2Page {
 		} else  {
 			 return false;
 		}
+		*/
+		let promesa = new Promise( (resolve, reject)=>{
+
+		      let confirmar = this.alertCtrl.create({
+		        title: "¿Seguro?",
+		        subTitle: "¿Esta seguro que desea entrar?",
+		        buttons: [
+		          {
+		            text: 'Cancelar',
+		            handler: () => {
+		            	resolve(false)  //promesa regresa un false
+		            	//return false;
+		            }
+		          },
+		          {
+		            text: 'Seguro!',
+		            handler: () => {
+
+		            	resolve(true) //promesa regresa un true
+		            	//return true;
+		            }
+		          }
+		        ]
+
+		      });
+
+		      confirmar.present();
+
+		    });
+
+		    return promesa;
+
 	}
 
 	ionViewDidLoad(){
@@ -40,12 +76,35 @@ export class Pagina2Page {
 	ionViewCanLeave(){
 		console.log('Event: ionViewCanLeave  (bool/prom) ->5- Puede Salir');
 		console.log('espere 2 seg para salir...');
+		/*
 		let promesa =new Promise ((resolve, reject) => {
 			setTimeout( ()=>{
 				resolve(true);
 			},2000)
 		})
 		return promesa;
+		*/
+		 let loading = this.loadingCtrl.create({
+		      content: "Espere por favor..."
+		    });
+
+		    loading.present();
+
+
+		    let promesa = new Promise( ( resolve, reject )=>{
+
+		      setTimeout( ()=>{
+
+		        loading.dismiss(); //apagamos el loading
+		        resolve(true)
+
+		      }, 2000 );
+
+		    })
+
+
+		  return promesa;
+
 	}
 
 	ionViewWillLeave(){
